@@ -1,0 +1,101 @@
+<html>
+ <meta charset="UTF-8">
+ <head>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://unpkg.com/chota@latest">
+</head>
+<body> 
+
+
+<div class="row" style="height: 40%">
+  <div class="col-1"></div>
+  <div class="col-10">
+    <button class="button" style="font-size: 15rem; width: 100%; height: 100%;" disabled id="target"></button>
+  </div>
+  <div class="col-1"></div>
+</div>
+
+<div class="row" style="height: 40%">
+  <div class="col-1"></div>
+  <div class="col-10" align="center">
+     <input id="color" type="color" disabled class="button outline" style="width: 100%; height: 100%;">
+  </div>
+  <div class="col-1"></div>
+</div>
+
+<div class="row" style="height: 20%">
+  <div class="col-1"></div>
+  <div class="col-10" align="center">
+     <button class="button success" style="font-size: 15rem; width: 100%; height: 100%;" id="effects">Efectos</button>
+  </div>
+  <div class="col-1"></div>
+</div>
+
+
+
+
+</body>
+<script>
+
+$.postJson = function(url, data, callback) {
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: url,
+        data: JSON.stringify(data),
+        dataType: "json"
+    }).done(callback);
+   
+}
+
+var light_status;
+
+$("#target").click(function(){
+  if (light_status == "on") {
+    light_status = "off"
+  } else {
+    light_status = "on"
+  }
+  $.postJson("/light", {"status": light_status}, function(data, status){
+    console.log(data)
+    update_status(data.status)
+  });
+});
+
+$("#effects").click(function(){
+  location.href="/effects"
+});
+
+
+var update_status = function(status) {
+    light_status = status
+    if (status == 'on'){
+        $("#target").text("ON").removeClass('outline');
+    } else {
+        $("#target").text("OFF").addClass('outline');
+    }
+}
+
+$("document").ready(function(){
+  $.get("/light", function(data, status){
+    $("#target").prop( "disabled", false ).addClass("primary");
+    update_status(data.status)
+  });
+  
+  $.get("/leds", function(data, status){
+    $("#color").val(data.status).prop( "disabled", false ).addClass("primary");
+    
+    $("#color").change(function(event){
+    $.postJson("/leds",{"status": $("#color").val()}, function(data, status){
+            $("#color").val(data.status)
+        })
+    
+    
+}); 
+
+  });
+  
+});
+
+</script>
+</html>

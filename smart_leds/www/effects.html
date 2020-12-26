@@ -1,0 +1,213 @@
+<html>
+ <meta charset="UTF-8">
+ <head>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://unpkg.com/chota@latest">
+</head>
+<body> 
+
+
+<div class="row" style="height: 20%">
+  <div class="col-1"></div>
+  <div class="col-10">
+    <div class="slidecontainer">
+  <input type="range" min="1" max="100" value="0" class="slider slider_red" id="myRange">
+</div>
+  </div>
+  <div class="col-1"></div>
+</div>
+
+<div class="row" style="height: 20%">
+  <div class="col-1"></div>
+  <div class="col-10">
+    <div class="slidecontainer">
+  <input type="range" min="1" max="100" value="0" class="slider slider_green" id="myRange">
+</div>
+  </div>
+  <div class="col-1"></div>
+</div>
+
+<div class="row" style="height: 20%">
+  <div class="col-1"></div>
+  <div class="col-10">
+    <div class="slidecontainer">
+  <input type="range" min="1" max="100" value="0" class="slider slider_blue" id="myRange">
+</div>
+  </div>
+  <div class="col-1"></div>
+</div>
+
+<div class="row" style="height: 20%">
+  <div class="col-1"></div>
+  <div class="col-10">
+    <div class="slidecontainer">
+  <input type="range" min="1" max="100" value="0" class="slider slider_white" id="myRange">
+</div>
+  </div>
+  <div class="col-1"></div>
+</div>
+
+<div class="row" style="height: 20%">
+  <div class="col-1"></div>
+  <div class="col-10">
+  <button class="button success" style="font-size: 15rem; width: 100%; height: 100%;" id="back">Volver</button>
+</div>
+  </div>
+  <div class="col-1"></div>
+</div>
+
+
+
+</body>
+<style>
+.slidecontainer {
+  width: 100%; /* Width of the outside container */
+}
+
+/* The slider itself */
+.slider {
+  -webkit-appearance: none;  /* Override default CSS styles */
+  appearance: none;
+  width: 100%; /* Full-width */
+  height: 100%; /* Specified height */
+  background: #d3d3d3; /* Grey background */
+  outline: none; /* Remove outline */
+  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+  -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+  transition: opacity .2s;
+}
+
+/* Mouse-over effects */
+.slider:hover {
+  opacity: 1; /* Fully shown on mouse-over */
+}
+
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+.slider_red::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: 180px; /* Set a specific slider handle width */
+  height: 180px; /* Slider handle height */
+  background: red; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+}
+
+.slider_red::-moz-range-thumb {
+  width: 180px; /* Set a specific slider handle width */
+  height: 180px; /* Slider handle height */
+  background: red; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+}
+
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+.slider_green::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: 180px; /* Set a specific slider handle width */
+  height: 180px; /* Slider handle height */
+  background: green; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+}
+
+.slider_green::-moz-range-thumb {
+  width: 180px; /* Set a specific slider handle width */
+  height: 180px; /* Slider handle height */
+  background: green; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+}
+
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+.slider_blue::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: 180px; /* Set a specific slider handle width */
+  height: 180px; /* Slider handle height */
+  background: blue; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+}
+
+.slider_blue::-moz-range-thumb {
+  width: 180px; /* Set a specific slider handle width */
+  height: 180px; /* Slider handle height */
+  background: blue; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+}
+
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+.slider_white::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: 180px; /* Set a specific slider handle width */
+  height: 180px; /* Slider handle height */
+  background: white; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+}
+
+.slider_white::-moz-range-thumb {
+  width: 180px; /* Set a specific slider handle width */
+  height: 180px; /* Slider handle height */
+  background: white; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+}
+</style>
+
+<script>
+
+$.postJson = function(url, data, callback) {
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: url,
+        data: JSON.stringify(data),
+        dataType: "json"
+    }).done(callback);
+   
+}
+
+
+$(".slider_blue").change(function(){
+  var t = parseInt($(".slider_blue").val());
+  if (t < 10) {
+    t = 0;
+  }
+  $.postJson("/pulse", {"blue": {"start": 0, "end": 1000, "duration": t*10}}, function(data, status){
+    console.log(data)
+  });
+});
+
+$(".slider_green").change(function(){
+  var t = parseInt($(".slider_green").val());
+  if (t < 10) {
+    t = 0;
+  }
+  $.postJson("/pulse", {"green": {"start": 0, "end": 1000, "duration": t*10}}, function(data, status){
+    console.log(data)
+  });
+});
+
+$(".slider_red").change(function(){
+  var t = parseInt($(".slider_red").val());
+  if (t < 10) {
+    t = 0;
+  }
+  $.postJson("/pulse", {"red": {"start": 0, "end": 1000, "duration": t*10}}, function(data, status){
+    console.log(data)
+  });
+});
+
+$(".slider_white").change(function(){
+  var t = parseInt($(".slider_white").val());
+  var s = true;
+  if (t < 5) {
+      s = false;
+  }
+  $.postJson("/pulse", {"white": {"continue": s, "time": t}}, function(data, status){
+    console.log(data)
+  });
+});
+
+$("#back").click(function(){
+  location.href="/"
+});
+</script>
+</html>
